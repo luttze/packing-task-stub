@@ -16,6 +16,9 @@ services:
         build: .
         working_dir: /app
         user: ${UID:-1000}:${GID:-1000}
+        environment:
+            BINPACKING_USERNAME: ${BINPACKING_USERNAME:-}
+            BINPACKING_API_KEY: ${BINPACKING_API_KEY:-}
         volumes:
           - .:/app
 

@@ -1,17 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Application;
-use Doctrine\ORM\EntityManager;
+use DI\ContainerBuilder;
 use GuzzleHttp\Psr7\Message;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 
-/** @var EntityManager $entityManager */
-$entityManager = require __DIR__ . '/src/bootstrap.php';
+require __DIR__ . '/vendor/autoload.php';
+
+$builder = new ContainerBuilder();
+$builder->addDefinitions(__DIR__ . '/config/container.php');
+$container = $builder->build();
 
 $request = new Request('POST', new Uri('http://localhost/pack'), ['Content-Type' => 'application/json'], $argv[1]);
 
-$application = new Application($entityManager);
+$application = $container->get(Application::class);
 $response = $application->run($request);
 
 echo "<<< In:\n" . Message::toString($request) . "\n\n";
